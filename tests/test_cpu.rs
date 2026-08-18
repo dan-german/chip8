@@ -333,3 +333,23 @@ fn test_fx55() {
     assert_eq!(cpu.memory[0x252], 0xC);
     assert_eq!(cpu.i, 0x253);
 }
+
+#[test]
+fn test_fx65() {
+    let mut cpu = CPU::new();
+    cpu.memory[0x290] = 0xE;
+    cpu.memory[0x291] = 0xF;
+    cpu.memory[0x292] = 0x1;
+    cpu.memory[0x293] = 0x5;
+    cpu.i = 0x290;
+    cpu.registers[4] = 8;
+
+    write_op_and_step(&mut cpu, 0xF365);
+
+    assert_eq!(cpu.registers[0], 0xE);
+    assert_eq!(cpu.registers[1], 0xF);
+    assert_eq!(cpu.registers[2], 0x1);
+    assert_eq!(cpu.registers[3], 0x5);
+    assert_eq!(cpu.registers[4], 8);
+    assert_eq!(cpu.i, 0x294);
+}

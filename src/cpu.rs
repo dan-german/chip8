@@ -141,6 +141,12 @@ impl CPU {
                     self.i += 1;
                 }
             }
+            0x65 => { 
+                for i in 0..=x { 
+                    self.registers[i] = self.memory[self.i as usize];
+                    self.i += 1;
+                }
+            }
             _ => todo!("opcode {nn}"),
         }
     }
