@@ -226,7 +226,7 @@ impl CPU {
     pub fn print_display(&self) {
         for row in 0..PIXEL_ROWS {
             for col in 0..PIXEL_COLS {
-                print!("{}", if self.display[row][col] { "X" } else { "_" });
+                print!("{}", if self.display[row][col] { "██" } else { "  " });
             }
             println!()
         }
