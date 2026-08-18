@@ -1,7 +1,6 @@
+use crate::lib::*;
 use rand;
 use std::fs;
-// use crate::{consts, lib::{PIXEL_COLS, PIXEL_ROWS}}*;
-use crate::lib::*;
 
 pub struct CPU {
     pub memory: [u8; 4096],
@@ -70,6 +69,7 @@ impl CPU {
 
     pub fn step(&mut self) {
         let opcode = self.fetch();
+        println!("{:X}\n", opcode);
         self.pc += 2;
         self.execute(opcode);
     }
@@ -83,10 +83,7 @@ impl CPU {
                 self.sp -= 1;
                 self.pc = self.stack[self.sp as usize];
             }
-            0 => {
-                self.pc = nnn;
-            }
-            _ => todo!("opcode {opcode:04X}"),
+            _ => self.pc = nnn,
         }
     }
 
@@ -141,8 +138,8 @@ impl CPU {
                     self.i += 1;
                 }
             }
-            0x65 => { 
-                for i in 0..=x { 
+            0x65 => {
+                for i in 0..=x {
                     self.registers[i] = self.memory[self.i as usize];
                     self.i += 1;
                 }
