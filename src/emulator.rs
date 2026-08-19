@@ -23,6 +23,7 @@ impl Emulator {
     }
 
     pub fn load_rom(&mut self, bytes: &[u8]) {
+        self.cpu.reset();
         self.cpu.memory[0x200..0x200 + bytes.len()].copy_from_slice(bytes);
         self.rom_loaded = true;
     }
@@ -32,7 +33,6 @@ impl Emulator {
             return;
         }
         self.cpu.step();
-        // web_sys::console::log_1(&format!("pc: {}", self.cpu.pc).into());
     }
 
     pub fn tick_timers(&mut self) {

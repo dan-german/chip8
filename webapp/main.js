@@ -1,11 +1,8 @@
 import init, { Emulator } from './pkg/chip8.js'
 
-
-const pixels = Array.from({ length: 32 }, (_, i) => Array.from({ length: 64 }))
-console.log(pixels)
 const canvas = document.getElementById("canvas")
 const context = canvas.getContext("2d")
-const cols = 64, rows = 32, size = 9, gap = 1
+const CONFIG = { COLS: 64, ROWS: 32, PIXEL_SIZE: 9, PIXEL_GAP: 1, CYCLES_PER_FRAME: 10 }
 const KEYS = [
     [["1", 1], ["2", 2], ["3", 3], ["C", 12]],
     [["4", 4], ["5", 5], ["6", 6], ["D", 13]],
@@ -14,7 +11,6 @@ const KEYS = [
 ]
 
 function setupUI(emu) {
-
     const keyboard = document.getElementById("keyboard")
     for (const row of KEYS) {
         for (const label of row) {
@@ -31,55 +27,46 @@ function setupUI(emu) {
 
 function draw(emu) {
     const display = emu.display_flat();
-
-    context.fillStyle = "#0c0c0c"
+    context.fillStyle = "#696969"
     context.fillRect(0, 0, canvas.width, canvas.height)
     context.fillStyle = "#c2ff78"
 
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-            if (display[r * cols + c]) {
-                context.fillRect(c * (size + gap), r * (size + gap), size, size)
+    for (let r = 0; r < CONFIG.ROWS; r++) {
+        for (let c = 0; c < CONFIG.COLS; c++) {
+            if (display[r * CONFIG.COLS + c]) {
+                context.fillRect(
+                    c * (CONFIG.PIXEL_SIZE + CONFIG.PIXEL_GAP),
+                    r * (CONFIG.PIXEL_SIZE + CONFIG.PIXEL_GAP),
+                    CONFIG.PIXEL_SIZE,
+                    CONFIG.PIXEL_SIZE
+                )
             }
         }
     }
 }
 
-let running = true;
-let emu
 async function run() {
     await init()
     const emu = new Emulator()
     setupUI(emu)
-    console.log(Object.getOwnPropertyNames(Object.getPrototypeOf(emu)));
 
     const romInput = document.getElementById("rom-input")
     romInput.addEventListener("change", async (e) => {
         const file = e.target.files[0]
         const buffer = await file.arrayBuffer();
         emu.load_rom(new Uint8Array(buffer))
-        running = true;
     })
 
     function frame() {
-        if (running) {
-            for (let i = 0; i < 10; i++) {
-                emu.step()
-            }
-
-            // console.log(emu.display_flat().filter(p => p === 1).length); // count of lit pixels
-            emu.tick_timers()
-            draw(emu)
+        for (let i = 0; i < CONFIG.CYCLES_PER_FRAME; i++) {
+            emu.step()
         }
+
+        emu.tick_timers()
+        draw(emu)
         requestAnimationFrame(frame)
     }
 
     requestAnimationFrame(frame)
-    // document.querySelectorAll(".key").forEach((button) => {
-    //     const label = button.textContent;
-    //     button.addEventListener("mousedown", () => emu.key_down(KEYS[label]));
-    //     button.addEventListener("mouseup", () => emu.key_up(KEY_VALUES[label]));
-    //     button.addEventListener("mouseleave", () => emu.key_up(KEY_VALUES[label])); // avoid stuck keys if dragged off
-    // });
 }
 run()

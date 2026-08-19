@@ -54,6 +54,19 @@ impl CPU {
         }
     }
 
+    pub fn reset(&mut self) {
+        self.memory[0x200..].fill(0);
+        self.registers = [0; 16];
+        self.keypad = [false; 16];
+        self.i = 0;
+        self.pc = 0x200;
+        self.stack = [0; 16];
+        self.sp = 0;
+        self.delay_timer = 0;
+        self.sound_timer = 0;
+        self.display = [[false; PIXEL_COLS]; PIXEL_ROWS];
+    }
+
     pub fn load_rom(&mut self, path: &str) -> Result<(), String> {
         let rom_bytes = fs::read(path).map_err(|e| e.to_string())?;
         if 0x200 + rom_bytes.len() > self.memory.len() {

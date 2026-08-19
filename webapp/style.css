@@ -1,8 +1,7 @@
 body {
   margin: 0;
   padding: 20px;
-  background-color: #1a1a1a;
-  color: #333;
+  background-color: hsl(0, 0%, 24%);
   font-family: sans-serif;
 }
 
@@ -23,7 +22,7 @@ body {
 
 .key {
   height: 50px;
-  background: #333;
+  background: #7c7c7c;
   border: 1px solid #555;
   border-radius: 4px;
   color: #fff;
@@ -40,4 +39,40 @@ body {
 
 .key:active {
   background: #666;
+}
+
+.main-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.disassembly {
+  width: 640px;
+  height: 200px;
+  overflow-y: auto;
+  background: #2a2a2a;
+  color: #0f0;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.disassembly .instr {
+  display: flex;
+  gap: 12px;
+  padding: 1px 4px;
+}
+
+.disassembly .instr.current {
+  background: #333;
+  color: #ff0;
+}
+
+.disassembly .addr {
+  color: #888;
+  width: 50px;
 }
