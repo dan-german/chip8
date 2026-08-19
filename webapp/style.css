@@ -48,31 +48,14 @@ body {
 }
 
 .disassembly {
-  width: 640px;
+  width: 320px;
   height: 200px;
   overflow-y: auto;
   background: #2a2a2a;
-  color: #0f0;
-  font-family: 'Courier New', monospace;
-  font-size: 13px;
-  padding: 10px;
-  border: 1px solid #555;
-  border-radius: 4px;
-  box-sizing: border-box;
+  color: #c2ff78;
 }
 
-.disassembly .instr {
-  display: flex;
-  gap: 12px;
-  padding: 1px 4px;
-}
-
-.disassembly .instr.current {
-  background: #333;
-  color: #ff0;
-}
-
-.disassembly .addr {
-  color: #888;
-  width: 50px;
+.disassembly table { 
+  text-align: left;
+  width: 100%;
 }

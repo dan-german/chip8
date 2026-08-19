@@ -1,19 +1,28 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
     <meta charset="UTF-8">
     <title>CHIP8</title>
-    <link rel="stylesheet" , href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-<input type="file" id="rom-input" accept=".ch8,.rom">
 
 <body>
     <div class="app-container">
         <div class="main-panel">
             <canvas id="canvas" width="640" height="320"></canvas>
-            <!-- <div id="disassembly" class="disassembly"></div> -->
+            <input type="file" id="rom-input" accept=".ch8,.rom">
+            <div class="disassembly">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ADDRESS</th>
+                            <th>OPCODE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="opcode-body"></tbody>
+                </table>
+            </div>
         </div>
         <div id="keyboard" class="keyboard"></div>
     </div>

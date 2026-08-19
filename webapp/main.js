@@ -45,17 +45,45 @@ function draw(emu) {
     }
 }
 
+function getPresentationOpcodes(view) {
+    const res = []
+    for (let i = 0; i < view.length - 1; i += 2) {
+        const addr = (0x200 + i).toString(16).toUpperCase()//.padStart(4, "0")
+        const opcode = ((view[i] << 8) | view[i + 1]).toString(16).toUpperCase().padStart(4, "0")
+        res.push({ addr, opcode })
+    }
+    return res
+}
+
+function renderTable(opcodes) {
+    const tbody = document.getElementById("opcode-body")
+    tbody.innerHTML = "";
+
+    const frag = document.createDocumentFragment()
+    for (const { addr, opcode } of opcodes) {
+        const tr = document.createElement("tr")
+        tr.innerHTML = `
+           <td style="padding:2px 8px;">0x${addr}</td>
+           <td style="padding:2px 8px;">${opcode}</td>
+        `
+        frag.appendChild(tr)
+    }
+    tbody.appendChild(frag)
+}
+
+async function load_rom(emu, file) {
+    const romBuffer = await file.arrayBuffer();
+    const view = new Uint8Array(romBuffer)
+    renderTable(getPresentationOpcodes(view))
+    emu.load_rom(view)
+}
+
 async function run() {
     await init()
     const emu = new Emulator()
     setupUI(emu)
-
-    const romInput = document.getElementById("rom-input")
-    romInput.addEventListener("change", async (e) => {
-        const file = e.target.files[0]
-        const buffer = await file.arrayBuffer();
-        emu.load_rom(new Uint8Array(buffer))
-    })
+    load_rom(emu, await fetch("./roms/IBM Logo.ch8"))
+    document.getElementById("rom-input").onchange = ({ target }) => load_rom(emu, target.files[0]);
 
     function frame() {
         for (let i = 0; i < CONFIG.CYCLES_PER_FRAME; i++) {
