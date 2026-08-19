@@ -1,5 +1,4 @@
-// use chip8::cpu::*;
-use chip8::lib::*;
+use chip8::cpu::*;
 
 fn write_op(cpu: &mut CPU, opcode: u16) {
     let [hi, lo] = opcode.to_be_bytes();
@@ -352,9 +351,4 @@ fn test_fx65() {
     assert_eq!(cpu.registers[3], 0x5);
     assert_eq!(cpu.registers[4], 8);
     assert_eq!(cpu.i, 0x294);
-}
-
-#[test]
-fn test_0nnn() { 
-    assert_eq!(cpu_after(0x0123).pc, 0x123);
 }

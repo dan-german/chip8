@@ -1,9 +1,0 @@
-pub const PIXEL_COLS: usize = 64;
-pub const PIXEL_ROWS: usize = 32;
-pub const PIXEL_SIZE: f32 = 8.0;
-pub const PIXEL_PAD: f32 = 1.0;
-pub const PIXEL_SECTION_WIDTH: f32 = (PIXEL_SIZE + PIXEL_PAD) * (PIXEL_COLS as f32);
-pub const PIXEL_SECTION_HEIGHT: f32 = (PIXEL_SIZE + PIXEL_PAD) * (PIXEL_ROWS as f32);
-pub const DISPLAY_WIDTH: f32 = PIXEL_SECTION_WIDTH + PIXEL_SECTION_HEIGHT;
-pub const DISPLAY_HEIGHT: f32 = PIXEL_SECTION_HEIGHT;
-pub const KEY_SIZE: f32 = DISPLAY_HEIGHT / 4.0;

@@ -1,6 +1,8 @@
-use crate::lib::*;
 use rand;
 use std::fs;
+
+pub const PIXEL_COLS: usize = 64;
+pub const PIXEL_ROWS: usize = 32;
 
 pub struct CPU {
     pub memory: [u8; 4096],
@@ -69,12 +71,11 @@ impl CPU {
 
     pub fn step(&mut self) {
         let opcode = self.fetch();
-        println!("{:X}\n", opcode);
         self.pc += 2;
         self.execute(opcode);
     }
 
-    fn op_0(&mut self, opcode: u16, nnn: u16) {
+    fn op_0(&mut self, opcode: u16) {
         match opcode {
             0x00E0 => {
                 self.display = [[false; PIXEL_COLS]; PIXEL_ROWS];
@@ -83,7 +84,7 @@ impl CPU {
                 self.sp -= 1;
                 self.pc = self.stack[self.sp as usize];
             }
-            _ => self.pc = nnn,
+            _ => {}
         }
     }
 
@@ -188,7 +189,7 @@ impl CPU {
         let vx = self.registers[x];
         let vy = self.registers[y];
         match op {
-            0 => self.op_0(opcode, nnn),
+            0 => self.op_0(opcode),
             1 => self.pc = nnn,
             2 => {
                 self.stack[self.sp as usize] = self.pc;
@@ -226,7 +227,14 @@ impl CPU {
     pub fn print_display(&self) {
         for row in 0..PIXEL_ROWS {
             for col in 0..PIXEL_COLS {
-                print!("{}", if self.display[row][col] { "██" } else { "  " });
+                print!(
+                    "{}",
+                    if self.display[row][col] {
+                        "██"
+                    } else {
+                        "  "
+                    }
+                );
             }
             println!()
         }
