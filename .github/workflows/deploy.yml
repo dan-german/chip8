@@ -27,7 +27,7 @@ jobs:
         run: cargo install wasm-pack
 
       - name: Build WASM
-        run: ./build-wasm.sh
+        run: bash build-wasm.sh
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
